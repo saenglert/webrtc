@@ -1,0 +1,20 @@
+{
+  "name": "webRTC",
+  "version": "0.0.1",
+  "description": "Test project for WebRTC",
+  "main": "dist/index.html",
+  "author": "Sascha Englert",
+  "license": "GNU GPLv3",
+  "scripts": {
+    "build": "webpack --progress",
+    "watch": "webpack --watch --progress"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^5.0.0",
+    "prettier": "1.13.5",
+    "source-map-loader": "^0.2.3",
+    "typescript": "^2.9.1",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3"
+  }
+}
