@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
+    "lib": ["es2018", "dom"],
     "module": "commonjs",
     "noImplicitAny": true,
     "noImplicitThis": true,
