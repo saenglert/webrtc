@@ -7,7 +7,8 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "build": "webpack --progress",
-    "watch": "webpack --watch --progress"
+    "watch": "webpack --watch --progress",
+    "dev": "webpack-dev-server --hot --open --content-base public/"
   },
   "devDependencies": {
     "@types/webrtc": "^0.0.23",
@@ -17,6 +18,7 @@
     "typescript": "^2.9.1",
     "webpack": "^4.12.0",
     "webpack-cli": "^3.0.3",
+    "webpack-dev-server": "^3.1.5",
     "webrtc-adapter": "^6.2.1"
   }
 }
