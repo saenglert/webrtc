@@ -10,24 +10,27 @@
     "build-server": "yarn tsc -p tsconfig.json",
     "server": "nodemon dist/server/index.js",
     "client": "webpack-dev-server --hot --open --content-base public/",
-    "dev":  "concurrently \"yarn watch-server\" \"yarn server\" \"yarn client\""
+    "dev": "concurrently \"yarn watch-server\" \"yarn server\" \"yarn client\""
   },
   "devDependencies": {
     "@types/node": "^10.5.7",
-    "@types/socket.io": "^1.4.36",
-    "@types/socket.io-client": "^1.4.32",
+    "@types/sockjs": "^0.3.31",
     "@types/webrtc": "^0.0.23",
     "awesome-typescript-loader": "^5.0.0",
     "concurrently": "^3.6.1",
     "css-loader": "^1.0.0",
     "nodemon": "^1.18.3",
     "prettier": "1.13.5",
-    "socket.io": "^2.1.1",
+    "sockjs": "^0.3.19",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.22.0",
     "typescript": "^2.9.1",
     "webpack": "^4.12.0",
     "webpack-cli": "^3.0.3",
     "webpack-dev-server": "^3.1.5"
+  },
+  "dependencies": {
+    "@types/sockjs-client": "^1.1.0",
+    "sockjs-client": "^1.1.5"
   }
 }

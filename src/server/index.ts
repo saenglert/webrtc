@@ -1,34 +1,23 @@
 import * as http from 'http';
 import * as fs from 'fs';
-import * as io from 'socket.io';
+import * as sockjs from 'sockjs'
 import { Config } from './constants';
 import trace from '../common/trace';
-import * as net from "net";
+
 
 const file: string = fs.readFileSync('config.json', 'utf8');
 const config: Config = JSON.parse(file);
 
-const onCon = (req: http.IncomingMessage, res: http.ServerResponse) => {
-  trace(req);
-  trace(res);
-};
+const echo = sockjs.createServer({sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js'});
+echo.on('connection', function(conn) {
+  trace('Connection established');
+  conn.on('data', function(message) {
+    trace('Data received, writing message');
+    conn.write(message);
+  });
+  conn.on('close', function() {trace('Closing')});
+});
 
-const app: http.Server = http.createServer(onCon).listen(config.port);
-const server: io.Server = io.listen(app, {origins: ['*:*']});
-trace('Server listening');
-trace('Origins', server.origins());
-
-const onCreateOrJoin = (channel: string, socket: io.Socket) => {
-  trace(channel, socket.rooms);
-};
-
-const onResponse = () => {};
-
-const onConnection = (socket: io.Socket) => {
-  trace('New Connection');
-  socket.on('create or join', channel => onCreateOrJoin(channel, socket));
-  socket.on('response', onResponse);
-};
-
-server.sockets.on('connection', onConnection);
-
+const server = http.createServer();
+echo.installHandlers(server);
+server.listen(9999, '0.0.0.0');
