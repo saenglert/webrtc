@@ -5,8 +5,8 @@ module.exports = {
     client: path.resolve(__dirname, 'src', 'client', 'index.ts'),
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js',
+    path: path.resolve(__dirname, 'dist', 'client'),
   },
   devtool: 'source-map',
   devServer: {

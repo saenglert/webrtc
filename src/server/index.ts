@@ -1,34 +1,47 @@
 import * as http from 'http';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as io from 'socket.io';
+import * as express from 'express';
+import * as cors from 'cors';
 import { Config } from './constants';
 import trace from '../common/trace';
-import * as net from "net";
 
 const file: string = fs.readFileSync('config.json', 'utf8');
 const config: Config = JSON.parse(file);
 
-const onCon = (req: http.IncomingMessage, res: http.ServerResponse) => {
-  trace(req);
-  trace(res);
+const exp: express.Express = express();
+const server: http.Server = new http.Server(exp);
+const sio: io.Server = io(server);
+
+exp.use(cors({ origin: true }));
+exp.use(express.static('dist'));
+exp.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'index.html'));
+});
+
+const onCreateOrJoin = (socket: io.Socket, channel: string) => {
+  const existingChannles = sio.sockets.adapter.rooms;
+
+  if (!existingChannles.hasOwnProperty(channel)) {
+    socket.join(channel);
+    socket.emit('created', channel);
+  } else {
+
+  }
 };
 
-const app: http.Server = http.createServer(onCon).listen(config.port);
-const server: io.Server = io.listen(app, {origins: ['*:*']});
-trace('Server listening');
-trace('Origins', server.origins());
-
-const onCreateOrJoin = (channel: string, socket: io.Socket) => {
-  trace(channel, socket.rooms);
-};
+const onMessage = () => {};
 
 const onResponse = () => {};
 
-const onConnection = (socket: io.Socket) => {
+sio.on('connection', (socket: io.Socket) => {
   trace('New Connection');
-  socket.on('create or join', channel => onCreateOrJoin(channel, socket));
+  socket.on('create or join', (channel: string) => onCreateOrJoin(socket, channel));
+  socket.on('message', onMessage);
   socket.on('response', onResponse);
-};
+});
 
-server.sockets.on('connection', onConnection);
-
+server.listen(config.port, () => {
+  trace('Server listening on ', config.port);
+});
